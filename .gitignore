@@ -1,0 +1,4 @@
+node_modules/
+.env
+# 면접 기록(개인정보)은 저장소에 올리지 않습니다
+data/sessions/

@@ -1,0 +1,23 @@
+{
+  "name": "hr-interview",
+  "version": "1.0.0",
+  "description": "AI 보조 인성·직무 면접 프로그램 - 실시간 꼬리질문 생성, 면접 분석, 인성검사 결과 비교",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node --env-file-if-exists=.env server.js",
+    "test": "node --test test/*.test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JaewoonAhn-HRnews/HR-interview.git"
+  },
+  "license": "ISC",
+  "engines": {
+    "node": ">=22.9"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^1.12.0",
+    "express": "^5.3.0"
+  }
+}

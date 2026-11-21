@@ -1,0 +1,14 @@
+{
+  "_comment": "회사 자체 인성검사의 척도 목록입니다. 실제 검사 척도명·설명·점수 범위로 바꿔 주세요. high/low 는 점수가 높을 때/낮을 때의 의미입니다.",
+  "testName": "자체 인성검사",
+  "scales": [
+    { "id": "conscientiousness", "name": "성실성", "description": "맡은 일을 계획적으로 끝까지 수행하는 정도", "min": 1, "max": 10, "high": "계획적, 꼼꼼함, 끈기", "low": "즉흥적, 마무리 약함" },
+    { "id": "responsibility", "name": "책임감", "description": "결과에 대해 스스로 책임지고 약속을 지키는 정도", "min": 1, "max": 10, "high": "주인의식, 약속 준수", "low": "책임 회피, 남 탓" },
+    { "id": "cooperation", "name": "협조성", "description": "타인과 협력하고 배려하며 갈등을 조율하는 정도", "min": 1, "max": 10, "high": "배려, 조율, 팀 지향", "low": "독단적, 갈등 유발" },
+    { "id": "emotional_stability", "name": "정서안정성", "description": "스트레스·압박 상황에서 감정을 조절하는 정도", "min": 1, "max": 10, "high": "침착, 회복력", "low": "불안, 감정 기복" },
+    { "id": "achievement", "name": "성취지향", "description": "높은 목표를 세우고 도전하는 정도", "min": 1, "max": 10, "high": "목표지향, 도전적", "low": "현상 유지 선호" },
+    { "id": "leadership", "name": "주도성·리더십", "description": "스스로 일을 이끌고 영향력을 발휘하는 정도", "min": 1, "max": 10, "high": "주도적, 영향력", "low": "수동적, 지시 대기" },
+    { "id": "integrity", "name": "정직성·윤리성", "description": "규범을 지키고 정직하게 행동하는 정도", "min": 1, "max": 10, "high": "원칙 준수, 투명함", "low": "편법 허용" },
+    { "id": "openness", "name": "개방성", "description": "새로운 경험·의견·변화를 수용하는 정도", "min": 1, "max": 10, "high": "호기심, 유연함", "low": "보수적, 변화 저항" }
+  ]
+}

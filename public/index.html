@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AI 면접 도우미</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <h1>AI 면접 도우미</h1>
+    <nav class="steps">
+      <button data-step="setup" class="active">1. 면접 준비</button>
+      <button data-step="interview">2. 면접 진행</button>
+      <button data-step="report">3. 분석 결과</button>
+    </nav>
+    <div class="topbar-actions">
+      <span id="candidate-badge" class="muted"></span>
+      <button id="btn-save" class="ghost">저장</button>
+      <button id="btn-load" class="ghost">불러오기</button>
+      <button id="btn-new" class="ghost">새 면접</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- 1. 면접 준비 -->
+    <section id="step-setup" class="step active">
+      <div class="grid-2">
+        <div class="card">
+          <h2>지원자 정보</h2>
+          <label>이름 <input id="c-name" type="text" placeholder="홍길동" /></label>
+          <label>지원 직무 <input id="c-role" type="text" placeholder="예: 마케팅 기획, 백엔드 개발, 영업관리" /></label>
+          <label>직무 설명 / 요구 역량 (선택)
+            <textarea id="c-jd" rows="4" placeholder="채용공고의 주요 업무, 자격요건, 우대사항 등을 붙여 넣으면 직무 질문과 평가가 더 정확해집니다."></textarea>
+          </label>
+          <label>면접 유형
+            <select id="c-type">
+              <option value="both">인성 + 직무</option>
+              <option value="personality">인성 면접</option>
+              <option value="job">직무 면접</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <h2 id="test-title">인성검사 결과</h2>
+            <button id="btn-add-scale" class="ghost small">+ 척도 추가</button>
+          </div>
+          <p class="muted small">회사 인성검사의 척도별 점수를 입력하세요. 척도 목록은 <code>data/personality-scales.json</code> 에서 바꿀 수 있습니다.</p>
+          <table class="scales-table">
+            <thead><tr><th>척도</th><th>범위</th><th>점수</th><th></th></tr></thead>
+            <tbody id="scales-body"></tbody>
+          </table>
+          <label>검사 보고서 원문 / 메모 (선택)
+            <textarea id="test-report" rows="4" placeholder="인성검사 결과지의 해석 문구, 특이사항(응답 신뢰도 등)을 붙여 넣으세요."></textarea>
+          </label>
+        </div>
+      </div>
+      <div class="actions-right">
+        <button id="btn-start" class="primary">면접 시작 →</button>
+      </div>
+    </section>
+
+    <!-- 2. 면접 진행 -->
+    <section id="step-interview" class="step">
+      <div class="interview-layout">
+        <aside class="card bank">
+          <div class="tabs">
+            <button data-bank="personality" class="active">인성 질문</button>
+            <button data-bank="job">직무 질문</button>
+          </div>
+          <button id="btn-gen-job" class="ghost small full hidden">✨ 지원 직무 맞춤 질문 생성</button>
+          <ul id="bank-list" class="bank-list"></ul>
+          <div class="custom-q">
+            <textarea id="custom-q" rows="2" placeholder="직접 질문 입력"></textarea>
+            <button id="btn-custom-q" class="ghost small full">이 질문 하기</button>
+          </div>
+        </aside>
+
+        <div class="center">
+          <div class="card question-card">
+            <div class="q-meta"><span id="q-tag" class="tag">질문을 선택하세요</span></div>
+            <p id="q-text" class="q-text">왼쪽 질문 목록에서 질문을 고르거나 직접 입력하세요.</p>
+          </div>
+
+          <div class="card">
+            <div class="card-head">
+              <h2>면접자 답변</h2>
+              <div class="rec-controls">
+                <span id="rec-status" class="muted small"></span>
+                <button id="btn-rec" class="rec">🎤 녹음 시작</button>
+              </div>
+            </div>
+            <textarea id="answer" rows="7" placeholder="녹음을 시작하면 면접자의 답변이 자동으로 받아써집니다. 직접 입력하거나 수정할 수도 있습니다."></textarea>
+            <p id="interim" class="interim"></p>
+            <div class="actions-right">
+              <button id="btn-submit" class="primary">답변 기록 &amp; 꼬리질문 생성</button>
+            </div>
+          </div>
+
+          <div id="followup-card" class="card hidden">
+            <h2>AI 분석 &amp; 꼬리질문</h2>
+            <div id="followup-body"></div>
+          </div>
+        </div>
+
+        <aside class="card log">
+          <div class="card-head">
+            <h2>면접 기록 <span id="turn-count" class="muted small"></span></h2>
+          </div>
+          <ol id="turn-list" class="turn-list"></ol>
+          <button id="btn-analyze" class="primary full">면접 종료 &amp; 분석하기</button>
+        </aside>
+      </div>
+    </section>
+
+    <!-- 3. 분석 결과 -->
+    <section id="step-report" class="step">
+      <div id="report-empty" class="card center-text">
+        <p>면접을 진행한 뒤 <b>면접 종료 &amp; 분석하기</b>를 눌러 주세요.</p>
+      </div>
+      <div id="report" class="hidden"></div>
+      <div id="report-actions" class="actions-right hidden no-print">
+        <button id="btn-reanalyze" class="ghost">다시 분석</button>
+        <button id="btn-download" class="ghost">JSON 다운로드</button>
+        <button id="btn-print" class="primary">인쇄 / PDF</button>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="load-dialog">
+    <h2>저장된 면접 불러오기</h2>
+    <ul id="session-list" class="session-list"></ul>
+    <form method="dialog" class="actions-right"><button class="ghost">닫기</button></form>
+  </dialog>
+
+  <div id="toast" class="toast"></div>
+  <div id="loading" class="loading hidden"><div class="spinner"></div><p id="loading-text">AI가 분석 중입니다...</p></div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
